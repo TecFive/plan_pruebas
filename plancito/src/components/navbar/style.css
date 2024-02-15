@@ -1,0 +1,42 @@
+.nav-item {
+    padding-left: 1rem;
+}
+
+.nav-search-container {
+    padding-left: 2rem;
+}
+
+.nav-search-button {
+    background: none;
+    border: 0.07rem solid gray;
+    transition: 0.5s;
+}
+
+.nav-search-input {
+    background: none;
+    border: 0.07rem solid gray;
+    margin-right: 0.5rem;
+    transition: 0.5s
+}
+
+.nav-search-input:focus {
+    border: 0.07rem solid #a56efe;
+    transition: 0.5s;
+}
+
+.nav-search-input:hover {
+    border: 0.07rem solid #a56efe;
+    transition: 0.5s;
+}
+
+.nav-search-button:hover {
+    transform: scale(1.05);
+    transition: 0.5s;
+    background: linear-gradient(30deg, rgba(110,123,254,1) 0%, rgba(254,81,254,1) 100%);
+    color: white;
+}
+
+.nav-search-button:active {
+    transform: scale(0.95);
+    transition: 0.3s;
+}
