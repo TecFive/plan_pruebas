@@ -1,17 +1,19 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, Typography, Form, Input, Row, Col, Dropdown, message } from 'antd';
+import axios from "axios";
 
 const { Title } = Typography;
 
 const Shop = () => {
+    const [items, setItems] = useState([]);
     const [selectedItem, setSelectedItem] = useState('');
 
     const onBuyingFinish = (values) => {
-        message.info(`Item Bought: ${selectedItem.displayName}`);
+        message.success(`Item Bought: ${selectedItem.displayName}`);
     };
 
     const onBuyingFinishFailed = (errorInfo) => {
-        message.info(`An error occurred while buying: ${selectedItem.displayName}`);
+        message.error(`An error occurred while buying: ${selectedItem.displayName}`);
     };
 
     const onItemDropdownClick = ({ key }) => {
@@ -21,26 +23,34 @@ const Shop = () => {
         message.info(`Item Selected: ${item.displayName || key}`);
     };
 
-    const items = [
-        {
-            label: '1st menu item',
-            displayName: '1st menu item',
-            url: 'https://via.placeholder.com/300',
-            key: '1',
-        },
-        {
-            label: '2nd menu item',
-            displayName: '2nd menu item',
-            url: 'https://via.placeholder.com/300',
-            key: '2',
-        },
-        {
-            label: '3rd menu item',
-            displayName: '3srd menu item',
-            url: 'https://via.placeholder.com/300',
-            key: '3',
-        },
-    ];
+    useEffect(() => {
+        const itemsToGet = ['Iron Man', 'Captain America', 'Thor', 'Hulk', 'Black Widow', 'Hawkeye', 'Scarlet Witch', 'Vision', 'Black Panther', 'Falcon'];
+
+        for (const itemToGet of itemsToGet) {
+            axios.get(`https://www.superheroapi.com/api.php/7625271654174028/search/${itemToGet}`)
+                .then((response) => {
+                    if (response.data.response === 'success') {
+                        setItems((items) => {
+                            const isAlreadyAdded = items.some(item => item.key === itemToGet);
+                            if (!isAlreadyAdded) {
+                                return [...items, {
+                                    key: itemToGet,
+                                    label: itemToGet,
+                                    displayName: itemToGet,
+                                    image: response.data.results[0].image.url,
+                                }];
+                            }
+                            return items;
+                        });
+                    } else {
+                        console.log("Error fetching the item's data: " + response.data.error)
+                    }
+                })
+                .catch((error) => {
+                    console.log("Error fetching the item's data: " + error)
+                });
+        }
+    }, []);
 
     return (
         <div>
@@ -111,7 +121,7 @@ const Shop = () => {
                 </Col>
 
                 <Col span={12}>
-                    <img src="https://via.placeholder.com/300" alt="Item" />
+                    <img src={selectedItem !== '' ? selectedItem.image : "https://via.placeholder.com/300"} alt="Item" />
                 </Col>
             </Row>
         </div>
