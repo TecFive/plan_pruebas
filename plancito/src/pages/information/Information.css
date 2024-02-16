@@ -1,0 +1,14 @@
+.hero-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+}
+
+.hero-card {
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+.hero-card img {
+    width: 100%;
+}
